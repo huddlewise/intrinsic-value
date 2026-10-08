@@ -1,25 +1,28 @@
-# Intrinsic Value Calculator
+# Intrinsic Value
 
-A single-file, no-build web app that estimates a **range** of intrinsic values per share (low / base / high) instead of a single number. It encodes ideas from Howard Marks, Warren Buffett, Charlie Munger and Mohnish Pabrai.
-
-## What it does
-- Owner earnings (net income + non-cash charges − maintenance capex − working-capital need), with optional 5–10 year median normalization
-- Two-stage DCF with fading growth, terminal growth capped at 3%, and visible discount rate (risk-free + premium, overridable)
-- Low / base / high range, probability-weighted value, sensitivity grid (discount rate × terminal growth) and "what moves the value" ranking
-- Reverse DCF: the growth the current price implies
-- Quality score → required margin of safety → buy-below price
-- Circle-of-competence gate, inversion checklist, automatic red flags, and a Buy zone / Watch / Pass signal
+A dependency-free, responsive investing site with an interactive owner-earnings and DCF calculator. Estimate a range of possible values, examine what the market price implies, and make your assumptions visible. This is an educational tool, not investment advice.
 
 ## Run locally
-Open `index.html` in a browser. There is no build step or dependency.
 
-## Deploy with GitHub Pages
-1. Push this folder to a new GitHub repository (branch `main`).
-2. Repo **Settings → Pages → Build and deployment → Deploy from a branch**.
-3. Choose `main` and `/ (root)`, then save. The site appears at `https://<your-username>.github.io/<repo-name>/`.
+Open `index.html` directly in a modern browser, or start a simple static server from this directory:
 
-## Data
-All inputs are entered by hand (price, EPS, cash flow, etc.). Nothing is fetched or sent anywhere.
+```sh
+python3 -m http.server 8000
+```
 
-## Disclaimer
-Simplified models for study and decision support. Not investment advice; check every input against current filings.
+Then visit <http://localhost:8000>. The calculator is embedded from `calculator.html`; use a local server if your browser restricts local-file iframes.
+
+## Files
+
+- `index.html` — marketing page, guidance, FAQ, and embedded calculator.
+- `styles.css` — responsive styles and reduced-motion support.
+- `script.js` — mobile navigation, FAQ accordion, anchor scrolling, and calculator sizing.
+- `calculator.html` — standalone owner-earnings valuation calculator.
+
+## Customize
+
+Edit the page copy and sections in `index.html`, adjust colors and layout in `styles.css`, or change navigation and accordion behavior in `script.js`. The calculator's assumptions and valuation logic are in `calculator.html`. All financial inputs are entered manually and remain in the browser; verify them against current filings.
+
+## GitHub Pages
+
+Publish the repository root using GitHub Pages (Settings → Pages → deploy from a branch, choose the repository branch and `/ (root)`). No build step or package installation is required.
