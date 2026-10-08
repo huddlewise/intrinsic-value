@@ -149,11 +149,29 @@ function calc(){
  const rr=[-2,-1,0,1,2].map(k=>r+k/100),tr=[.01,.02,.03];
  $('sens').innerHTML='<tr><th>g∞ \\ r</th>'+rr.map(x=>`<th>${(x*100).toFixed(1)}%</th>`).join('')+'</tr>'+tr.map(t=>`<tr><td>${(t*100).toFixed(0)}%</td>`+rr.map(x=>{const y=V(oe,g,x,t,n);return`<td class="${y>=px?'g':'b'}">${fm(y)}</td>`}).join('')+'</tr>').join('');
  // quality & risk
- $('qr').innerHTML=ln('Quality score','ROIC vs cost, stability, FCF conversion, moat, management',q.toFixed(0)+' / 100',q>=60?'g':q>=40?'w':'b')+
-  ln('Required margin of safety','50% − quality credit + flags + market temperature',need.toFixed(0)+'%')+
-  ln('If price reaches base in 4 yrs','Pabrai-style return check',(ret*100).toFixed(1)+'% / yr',ret>=.15?'g':'w')+
-  `<div style="margin-top:8px;font-size:13px"><b>Gates</b><ul class="fl">${gates.map(x=>`<li class="${x[1]?'g':'b'}">${x[1]?'✓':'✗'} ${x[0]}</li>`).join('')}</ul></div>`+
-  `<div style="margin-top:8px;font-size:13px"><b>Red flags (${flags.length})</b>${flags.length?`<ul class="fl">${flags.map(f=>`<li>${f}</li>`).join('')}</ul>`:'<div class="note">None raised.</div>'}</div>`;
+ const qr=$('qr');
+ qr.replaceChildren();
+ const metric=(title,description,value,tone='')=>{
+  const row=document.createElement('div'),label=document.createElement('span'),note=document.createElement('small'),result=document.createElement('b');
+  row.className='kv';label.textContent=title;note.textContent=description;label.append(note);result.textContent=value;if(tone)result.className=tone;row.append(label,result);qr.append(row);
+ };
+ metric('Quality score','ROIC vs cost, stability, FCF conversion, moat, management',q.toFixed(0)+' / 100',q>=60?'g':q>=40?'w':'b');
+ metric('Required margin of safety','50% − quality credit + flags + market temperature',need.toFixed(0)+'%');
+ metric('If price reaches base in 4 yrs','Pabrai-style return check',(ret*100).toFixed(1)+'% / yr',ret>=.15?'g':'w');
+ const listSection=(title,items,emptyText)=>{
+  const section=document.createElement('div'),heading=document.createElement('b');
+  section.style.cssText='margin-top:8px;font-size:13px';section.append(heading);heading.textContent=title;
+  if(items.length){
+   const list=document.createElement('ul');list.className='fl';
+   items.forEach(item=>{const entry=document.createElement('li');entry.className=item.className||'';entry.textContent=item.text;list.append(entry)});
+   section.append(list);
+  }else{
+   const empty=document.createElement('div');empty.className='note';empty.textContent=emptyText;section.append(empty);
+  }
+  qr.append(section);
+ };
+ listSection('Gates',gates.map(x=>({className:x[1]?'g':'b',text:(x[1]?'✓':'✗')+' '+x[0]})),'');
+ listSection('Red flags ('+flags.length+')',flags.map(text=>({text})),'None raised.');
 }
 document.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',calc));calc();
 </script></main></body></html>
